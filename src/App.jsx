@@ -1,17 +1,10 @@
 import React from 'react';
-import ResponsiveForm from './Form';
-import RegisterForm from './RegisterForm';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import ResponsiveForm from './Form'; // Importa el componente del formulario
 
 function App() {
   return (
     <div className="App">
-      <Router>
-        <Routes>
-          <Route path="/" element={<ResponsiveForm/>}></Route>
-          <Route path="/register" element={<RegisterForm/>}></Route>
-        </Routes>
-      </Router>
+      <ResponsiveForm />
     </div>
   );
 }
