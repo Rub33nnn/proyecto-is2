@@ -1,0 +1,44 @@
+Los controladores están definidos en la carpeta Controladores, dentro del BD_Back
+Los campos que recibe y envia cada endpoint están definidos en cada modelo de la carpeta Models
+
+Este archivo es para tratar de dejar claro como se usan desde el front, si tienen dudas vean si ya hay algún método de cada tipo (get, post, put o delete) implementado y sigan la misma lógica, si no, hay muchos tutoriales en youtube
+
+ENDPOINT 1 Método Get: getUser
+	Este endpoint solo obtiene un usuario, desde el front al hacer la llamada a la api debes mandar como un correo electronico, el cual es el correo que tiene asignado el usuario que quieres obtener, principalmente se usa para hacer login, y además con esto ya puedes guardar toda la información de un usuario para usarla mas adelante
+Endpoint 2 Método Get: getUSerbypk: Lo mismo pero en vez de por correo es por su clave primaria
+Endpoint 3 Método Post: addUser: Este endpoint registra en la base de datos un usuario, debes mandar como parámetro en formato json los campos que aparecen en la BD, se debería ver algo asi
+{
+  "username": "Juan",
+  "email":"jua@gmail",
+  "password":"juan123",
+  "imguser":"Aquí la idea se envie una imagen por la api, pero aun no se como se hace eso, y al hacerlo se creara una ruta que se guardara en la BD, y las imágenes en una carpeta dentdo del backend, pero aun no se como se hace eso asi que de momento queda vacio"
+}
+El registro ya esta implementado en la app, pueden seguir la misma lógica para el resto de endpoints que sean métodos Post o Put
+Endpoint 4 Método Put: updateuser
+	Este lo que haría seria actualizar a los usuarios, sigue un formato similar al anterior
+Endpoint 5 método Delete: deleteuser
+	Elimina usuarios
+Endpoint 6, Método Get: obtenerconversacion
+	Se obtiene una conversación a la que pertenece un usuario, de nuevo recibe un parámetro, esta vez un id de usuario, cada conversasion te mostrara los dos participantes de la conversación y sus nombres, pueden usarlos para mostrar el nombre del otro contacto en el front, al llamar a la api también pueden usar la id que se obtuvo al hacer el lgin con el primer endpoint, por eso digo que guarden esa información porque se va a estar  usando
+una vez obtenidas las conversaciones pueden usar esa información para mostrarlas en la parte izquierda de la ventana, como en whatsapp, al devolverte una lista se puede acceder a cada elemento de ella como si fuera un arreglo
+Endpoint 7 Método Get: obtenermensajes
+	Este obtiene todos los mensajes de una conversación, recibe un parámetro en este caso la id de la conversación y devuelve en una lista todos los mensajes de esa conversación, en el json que devuelve están la id del que lo envió, el mensaje y la fecha y hora en que se mando, además se puede crear un hilo que se actualice constantemente para que cuando algún usuario mande un mensaje este se refleje automáticamente en la pantalla
+Endpoint 8 Método post: 
+	Se crea una conversación, de nuevo en formato json debes mandar los campos que pide
+Se puede usar la información de sesión guardada para esto y usando un endpoint que no se me había ocurrido hasta ahora xD para buscar un usuario por su nombre de usuario, ese endpoint se usaría para hacer la búsqueda de usuarios con los que inicar una conversación, bueno, al buscar al usuario e iniciar la conversación se llamaría a este endpoint, se necesitan los id de ambos participantes
+Endpoint 9 Método Post: Enviar mensaje
+	Este endpoint se llamaría cuando algún usuario mande un mensaje, para que se guarde en la BD
+
+Bueno ya hasta aquí a chambear que tenemos 8 días a partir de hoy (8 de diciembre)
+
+Estas son las dependencias que se ocupan para que la api jale chido
+"dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "multer": "^1.4.5-lts.1",
+    "mysql2": "^3.10.2",
+    "sequelize": "^6.37.3"
+  },
+Talvez alguna de estas no sea necesaria, pero la neta no sabría decir cual asi que tu instalalas
+	

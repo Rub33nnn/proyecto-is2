@@ -12,9 +12,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sendemail = exports.deleteuser = exports.updateuser = exports.addUSer = exports.getUSerbypk = exports.getUSer = exports.getUsers = void 0;
+exports.sendemail = exports.enviarmensaje = exports.crearconversacion = exports.obtenermensajes = exports.obtenerconversacion = exports.deleteuser = exports.updateuser = exports.addUSer = exports.getUSerbypk = exports.getUSer = exports.getUsers = void 0;
 const user_1 = __importDefault(require("../models/user"));
 const userinfo_1 = __importDefault(require("../models/userinfo"));
+const connectiondb_1 = __importDefault(require("../DB/connectiondb"));
+const mensaje_1 = __importDefault(require("../models/mensaje"));
+const createconversation_1 = __importDefault(require("../models/createconversation"));
 const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const listuse = yield user_1.default.findAll();
     res.json(listuse);
@@ -105,6 +108,73 @@ const deleteuser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     });
 });
 exports.deleteuser = deleteuser;
+const obtenerconversacion = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { iduser } = req.params;
+    console.log(iduser);
+    try {
+        const results = yield connectiondb_1.default.query('CALL obtenerconversasionesdeusuario(:iduser)', {
+            replacements: { iduser },
+        });
+        res.status(200).json(results);
+    }
+    catch (err) {
+        console.error("Error al ejecutar el procedimiento: ", err);
+        res.status(500).json({
+            error: "Error al obtener la conversasion. "
+        });
+    }
+});
+exports.obtenerconversacion = obtenerconversacion;
+const obtenermensajes = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { idconversacion } = req.params;
+    const mensaje = yield mensaje_1.default.findAll({
+        where: {
+            conversation_id: idconversacion
+        }
+    });
+    if (mensaje) {
+        res.json(mensaje);
+        console.log(mensaje);
+    }
+    else {
+        res.status(404).json({
+            msg: 'No existe la conversacion'
+        });
+    }
+});
+exports.obtenermensajes = obtenermensajes;
+const crearconversacion = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { body } = req;
+    try {
+        yield createconversation_1.default.create(body);
+        console.log(body);
+        res.json({
+            msg: 'add conversation',
+        });
+    }
+    catch (error) {
+        res.json({
+            msg: 'No se pudo agregar la conversasion'
+        });
+    }
+});
+exports.crearconversacion = crearconversacion;
+const enviarmensaje = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { body } = req;
+    try {
+        yield mensaje_1.default.create(body);
+        console.log(body);
+        res.json({
+            msg: "Mensaje sendeado"
+        });
+    }
+    catch (error) {
+        res.json({
+            msg: "No se pudo mandar el mensaje"
+        });
+    }
+});
+exports.enviarmensaje = enviarmensaje;
 const sendemail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log("Manda email");
 });

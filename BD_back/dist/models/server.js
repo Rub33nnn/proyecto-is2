@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const user_1 = __importDefault(require("../routes/user"));
+const rutas_1 = __importDefault(require("../routes/rutas"));
 const connectiondb_1 = __importDefault(require("../DB/connectiondb"));
 const cors_1 = __importDefault(require("cors"));
 //Estas son las configuraciones para el server, la neta no recuerdo bien como funcionaba xD
@@ -37,7 +37,7 @@ class Server {
                 msg: 'api working'
             });
         });
-        this.app.use('/api/login', user_1.default);
+        this.app.use('/api/login', rutas_1.default);
     }
     midlewares() {
         //parseamos el body

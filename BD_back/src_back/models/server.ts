@@ -1,5 +1,5 @@
 import express, {Application, Request, Response} from 'express'
-import routesUser from '../routes/user'
+import routesUser from '../routes/rutas'
 import db from '../DB/connectiondb'
 import cors from 'cors'
 //Estas son las configuraciones para el server, la neta no recuerdo bien como funcionaba xD
