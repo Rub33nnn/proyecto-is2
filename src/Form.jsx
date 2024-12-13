@@ -20,40 +20,38 @@ const LoginForm = () => {
   })
   const navigate = useNavigate()
 
-  const mandarDatos = () =>{ //Este metodo es el que se comunica con el backend
-    axios.get('http://localhost:3000/api/login/'+login.correo).then(function (response) { //La url es la de la api a la que se comunica y se le agrega el parametro con el que se va a hacer la consulta
-      console.log("Respuesta de la BD");
-      console.log(response.data); //Imprimo en consola al respuesta de la api que deberian ser los datos obtenidos de la base de datos
-
-      setUser({ //Guardamos los datos de la repuesta en user para poder usarlas luego
-        id: response.data[0].id,
-        username: response.data[0].username,
-        correo: response.data[0].email,
-        contraseña: response.data[0].password,
-        imguser: response.data[0].imguser
-      })
-    })
-
-    .catch(function (error) {
-      // handle error
-      console.log(error);
-      alert("Ha ocurrido un error" + error)
-    })
-    .finally(function () {
-      // always executed
-    });
-
-    comprobarUsuario() //Llamamos al metodo para comprobar si los datos son correctos
-  }
-
-  const comprobarUsuario = () =>{
-    if(user.correo == login.correo){ //Comparamos el correo introducido en el formulario y el de la base de datos 
-      if(user.contraseña == login.contrasena){ //(Penandolo bien no tiene sentido porque si no introduces bien el correo la api no te devolvera nada pero bueno xD)
-        alert("Iniciando Sesion") //A y se compara la contraseña introducida en el formulario y la que se obtuvo por medio de la consulta
-        navigate('/chatui')
-      }else(alert("Usuario o contraseña incorrecta")) //Si son correctos sale esta alerta, aqui se puede agregar lo de pasar a la pagina principal y asi
-    }else(alert("Usuario o contraseña incorrecta"))
-  }
+  const mandarDatos = async () => { // La modifiqué, ahora recibe los datos de la API y los trata desde ahí, los declara vaciós pero no los usa vacíos
+    try {
+      const response = await axios.get(`http://localhost:3000/api/login/${login.correo}`);
+      console.log("Respuesta de la BD", response.data); // ESTOS SON LOS DATOS RECOLECTADOS DE LA API
+  
+      if (response.data.length > 0) {
+        comprobarUsuario(response.data[0]); 
+      } else {
+        alert("Usuario no encontrado");
+      }
+    } catch (error) { // Maneja el error
+      console.error("Error en la solicitud:", error);
+      alert("Ha ocurrido un error en la conexión");
+    }
+  };
+  
+  const comprobarUsuario = (userData) => { // 
+    console.log("Datos ingresados:", login);
+    console.log("Datos recibidos:", userData);
+  
+    if (userData.email === login.correo) {
+      if (userData.password === login.contrasena) {
+        alert("Iniciando Sesión");
+        navigate('/chatui'); // Redirige al chat
+      } else {
+        alert("Contraseña incorrecta");
+      }
+    } else {
+      alert("Correo incorrecto");
+    }
+  };
+  
 
   const handleChange = (e) => { //Con este metodo se guardan los datos del formulario, no se como funciona me lo encontre por ahi
     const { name, value } = e.target;
