@@ -1,7 +1,55 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Button, Form } from "react-bootstrap";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function Perfil() {
+  const [userData, setuserData] = useState({
+    username: "",
+    email: "",
+    telefono: ""
+  });
+  const [fotoperfil,setfotoperfil] = useState('');
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const obtenerdatos = async () => {
+      
+      const correo = localStorage.getItem("ucorreo"); //Trae el correo que se uso para iniciar sesion
+      try {
+        const response = await axios.get(`http://localhost:3000/api/login/${correo}`); //Manda por la informacion por medio del correo
+        const { username, email, telefono } = response.data[0];
+
+        setuserData({ username ,email, telefono: telefono || ""}); //Guarda en UserData
+
+        const p_letra = username.charAt(0).toUpperCase();
+        setfotoperfil(p_letra);
+
+      } catch (error){
+        console.error("No se pudo obtener datos",error);
+      }
+    };
+    obtenerdatos();
+  }, []);
+
+  useEffect(() => {
+    if (fotoperfil) {
+      localStorage.setItem("fotoperfil", fotoperfil);
+    }
+  }, [fotoperfil]);
+
+  const handleRedirect = () => {
+    navigate('/chatui') //Te manda a la pagina principal
+  };
+
+  function handleChange(e) {
+    const { name, value } = e.target;
+    setuserData((prevState) => ({
+      ...prevState,
+      [name]: value
+    }));
+  }
+
   return (
     <Container fluid className="d-flex align-items-center justify-content-center vh-100">
       <div
@@ -40,7 +88,7 @@ function Perfil() {
                 margin: "0 auto",
               }}
             >
-              A {/* Inicial del usuario */}
+              {fotoperfil} {/* Inicial del usuario */}
             </div>
             <Button variant="link" className="mt-2 text-decoration-none text-primary fw-bold">
               Cambiar Foto
@@ -55,8 +103,10 @@ function Perfil() {
             <Form.Control 
               type="text" 
               placeholder="Nombre completo" 
-              defaultValue="Juan Pérez" 
-              className="rounded-pill" 
+              value={userData.username} //Le asigno el valor de username de UserData
+              onChange={handleChange}
+              className="rounded-pill"
+              name = "username"
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="email">
@@ -64,8 +114,12 @@ function Perfil() {
             <Form.Control 
               type="email" 
               placeholder="Correo electrónico" 
-              defaultValue="juanperez@example.com" 
+              value={userData.email}
+              onChange={handleChange}
               className="rounded-pill" 
+              disabled
+              name = "email"
+
             />
           </Form.Group>
           <Form.Group className="mb-4" controlId="telefono">
@@ -73,8 +127,10 @@ function Perfil() {
             <Form.Control 
               type="text" 
               placeholder="Número de teléfono" 
-              defaultValue="+123456789" 
+              value={userData.telefono}
+              onChange={handleChange}
               className="rounded-pill" 
+              name = "telefono"
             />
           </Form.Group>
           <Button 
@@ -85,10 +141,19 @@ function Perfil() {
           >
             Guardar Cambios
           </Button>
+          <Button 
+            variant="primary" 
+            type="button" 
+            className="w-100 rounded-pill fw-semibold"
+            style={{ padding: "10px 0", marginTop: "10px"}}
+            onClick={handleRedirect} //Mando llamar para regresarme a la pgina principal
+          >
+            Regresar
+          </Button>
         </Form>
       </div>
     </Container>
   );
 }
 
-export default Perfil;
+export default Perfil; 
