@@ -7,26 +7,23 @@ function Perfil() {
   const [userData, setuserData] = useState({
     username: "",
     email: "",
-    telefono: ""
+    telefono: "",
   });
-  const [fotoperfil,setfotoperfil] = useState('');
+  const [fotoperfil, setfotoperfil] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
     const obtenerdatos = async () => {
-      
-      const correo = localStorage.getItem("ucorreo"); //Trae el correo que se uso para iniciar sesion
+      const correo = localStorage.getItem("ucorreo"); // Trae el correo que se usó para iniciar sesión
       try {
-        const response = await axios.get(`http://localhost:3000/api/login/${correo}`); //Manda por la informacion por medio del correo
+        const response = await axios.get(`http://localhost:3000/api/login/${correo}`); // Solicita información mediante el correo
         const { username, email, telefono } = response.data[0];
 
-        setuserData({ username ,email, telefono: telefono || ""}); //Guarda en UserData
-
+        setuserData({ username, email, telefono: telefono || "" }); // Guarda en userData
         const p_letra = username.charAt(0).toUpperCase();
         setfotoperfil(p_letra);
-
-      } catch (error){
-        console.error("No se pudo obtener datos",error);
+      } catch (error) {
+        console.error("No se pudo obtener datos", error);
       }
     };
     obtenerdatos();
@@ -39,14 +36,20 @@ function Perfil() {
   }, [fotoperfil]);
 
   const handleRedirect = () => {
-    navigate('/chatui') //Te manda a la pagina principal
+    navigate("/chatui"); // Redirige a la página principal
   };
+
+  const handleLogout = () => {
+    localStorage.removeItem('isLoggedIn'); // Elimina el estado de sesión
+    localStorage.removeItem('ucorreo'); // Limpia el correo almacenado
+    navigate('/'); // Redirige a la pantalla de inicio de sesión
+  };  
 
   function handleChange(e) {
     const { name, value } = e.target;
     setuserData((prevState) => ({
       ...prevState,
-      [name]: value
+      [name]: value,
     }));
   }
 
@@ -100,55 +103,63 @@ function Perfil() {
         <Form>
           <Form.Group className="mb-3" controlId="nombre">
             <Form.Label className="fw-semibold">Nombre</Form.Label>
-            <Form.Control 
-              type="text" 
-              placeholder="Nombre completo" 
-              value={userData.username} //Le asigno el valor de username de UserData
+            <Form.Control
+              type="text"
+              placeholder="Nombre completo"
+              value={userData.username} // Asigna el valor de username
               onChange={handleChange}
               className="rounded-pill"
-              name = "username"
+              name="username"
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="email">
             <Form.Label className="fw-semibold">Correo Electrónico</Form.Label>
-            <Form.Control 
-              type="email" 
-              placeholder="Correo electrónico" 
+            <Form.Control
+              type="email"
+              placeholder="Correo electrónico"
               value={userData.email}
               onChange={handleChange}
-              className="rounded-pill" 
+              className="rounded-pill"
               disabled
-              name = "email"
-
+              name="email"
             />
           </Form.Group>
           <Form.Group className="mb-4" controlId="telefono">
             <Form.Label className="fw-semibold">Teléfono</Form.Label>
-            <Form.Control 
-              type="text" 
-              placeholder="Número de teléfono" 
+            <Form.Control
+              type="text"
+              placeholder="Número de teléfono"
               value={userData.telefono}
               onChange={handleChange}
-              className="rounded-pill" 
-              name = "telefono"
+              className="rounded-pill"
+              name="telefono"
             />
           </Form.Group>
-          <Button 
-            variant="primary" 
-            type="submit" 
+          <Button
+            variant="primary"
+            type="submit"
             className="w-100 rounded-pill fw-semibold"
             style={{ padding: "10px 0" }}
           >
             Guardar Cambios
           </Button>
-          <Button 
-            variant="primary" 
-            type="button" 
+          <Button
+            variant="primary"
+            type="button"
             className="w-100 rounded-pill fw-semibold"
-            style={{ padding: "10px 0", marginTop: "10px"}}
-            onClick={handleRedirect} //Mando llamar para regresarme a la pgina principal
+            style={{ padding: "10px 0", marginTop: "10px" }}
+            onClick={handleRedirect} // Regreso a la página principal
           >
             Regresar
+          </Button>
+          <Button
+            variant="danger"
+            type="button"
+            className="w-100 rounded-pill fw-semibold"
+            style={{ padding: "10px 0", marginTop: "10px" }}
+            onClick={handleLogout} // Llama a la función de cerrar sesión
+          >
+            Cerrar Sesión
           </Button>
         </Form>
       </div>
@@ -156,4 +167,4 @@ function Perfil() {
   );
 }
 
-export default Perfil; 
+export default Perfil;
