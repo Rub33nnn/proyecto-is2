@@ -11,6 +11,7 @@ const LoginForm = () => {
 
   const navigate = useNavigate();
 
+
   // Verifica si el usuario ya está logueado
   useEffect(() => {
     const isLoggedIn = localStorage.getItem('isLoggedIn');
@@ -18,6 +19,7 @@ const LoginForm = () => {
       navigate('/chatui'); // Redirige al chat si está logueado
     }
   }, []); // Solo ejecuta al cargar el componente
+
 
   const mandarDatos = async () => {
     try {
@@ -43,6 +45,7 @@ const LoginForm = () => {
       if (userData.password === login.contrasena) {
         alert('Iniciando Sesión');
         localStorage.setItem('isLoggedIn', 'true'); // Guarda el estado de sesión
+        localStorage.setItem("ucorreo",login.correo); //Nomas lo puse para el correo global
         navigate('/chatui'); // Redirige al chat
       } else {
         alert('Contraseña incorrecta');
