@@ -1,5 +1,5 @@
 import db from '../DB/connectiondb'
-import { DataTypes } from 'sequelize'
+import { DataTypes } from 'sequelize';
 
 //Aqui definimos un modelo donde vamos a guarda la informacion para la base de datos, este puede ser usado tanto para hacer consultas como para insertar en la BD
 const User = db.define('user', { //Lo que esta en comillas es el nombre de la tabla en donde vas a insertar o consultar los datos
@@ -13,7 +13,13 @@ const User = db.define('user', { //Lo que esta en comillas es el nombre de la ta
         type: DataTypes.STRING
     },
     imguser:{
-        type:DataTypes.STRING
+        type: DataTypes.STRING
+    },
+    recoverytoken:{
+        type: DataTypes.STRING
+    },
+    recoverytokenexpiration:{
+        type: DataTypes.DATE
     }
 },{
     createdAt: false,

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const RegisterForm = () => {
 
@@ -13,18 +13,21 @@ const RegisterForm = () => {
   })
   const navigate = useNavigate()
 
-  const addUser = () =>{  
-    if(Register.password == Register.confpassword){
-      alert("Usuario " + Register.username + " Registrado")
-      axios.post('http://localhost:3000/api/login/', Register).then(() =>{
-      alert("Usuario añadido, por favor inice sesion con su usuario")
-      navigate("/login")
-    })
-    //Y ya aqui hacen para pasar a la pantalla inicial
+  const addUser = () =>{
+    if(Register.password.length >= 8){
+      if(Register.password == Register.confpassword){
+        alert("Usuario " + Register.username + " Registrado")
+        axios.post('http://localhost:3000/api/login/', Register).then(() =>{
+        alert("Usuario añadido, por favor inice sesion con su usuario")
+        navigate("/login")
+      })
+      //Y ya aqui hacen para pasar a la pantalla inicial
+      }else{
+        alert("Las contraseñas no coinciden")
+      }
     }else{
-      alert("Las contraseñas no coinciden")
+      alert("La contraseña tiene que tener minimo 8 caracteres");
     }
-    
   }
 
   const handleChange = (e) => { //Con este metodo se guardan los datos del formulario, no se como funciona me lo encontre por ahi
@@ -34,6 +37,7 @@ const RegisterForm = () => {
       [name]: value
     }));
   };
+
   return (
     <Container className="d-flex align-items-center justify-content-center vh-100 p-0" fluid>
       <Row className="justify-content-center w-100">
@@ -65,6 +69,7 @@ const RegisterForm = () => {
                 Registrar
               </Button>
             </Form>
+            <Link to="/login">Volver al inicio de sesión</Link>
           </div>
         </Col>
       </Row>

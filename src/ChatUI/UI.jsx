@@ -1,11 +1,25 @@
-import React from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import { Link } from "react-router-dom"; // Importamos Link para la navegación
-import 'bootstrap-icons/font/bootstrap-icons.css';
+import "bootstrap-icons/font/bootstrap-icons.css";
+import { useConfiguracion } from "./AppContext"; // Importamos el contexto para el tema y tamaño de fuente
 
 function HeaderChatUI() {
+  const { config } = useConfiguracion(); // Accedemos al contexto para obtener el tema y tamaño de fuente
+  const recuperar_chats = () =>{
+    
+  };
+
   return (
-    <Container fluid className="h-100 p-0 d-flex flex-column">
+    <Container
+      fluid
+      className="h-100 p-0 d-flex flex-column"
+      style={{
+        backgroundColor: config.theme === "Oscuro" ? "#333" : "#fff", // Cambia el fondo según el tema
+        color: config.theme === "Oscuro" ? "#fff" : "#000", // Cambia el color del texto según el tema
+        fontSize: `${config.fontSize}px`, // Aplica el tamaño de fuente
+      }}
+    >
       {/* Header */}
       <Row className="shadow m-0 pt-3 pb-3 align-items-center">
         <Col>
@@ -19,7 +33,8 @@ function HeaderChatUI() {
                 width: "40px",
                 height: "40px",
                 borderRadius: "50%",
-                backgroundColor: "#007bff",
+                backgroundColor:
+                  config.theme === "Oscuro" ? "#007bff" : "#007bff",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -36,7 +51,15 @@ function HeaderChatUI() {
 
       <Row className="flex-grow-1 m-0 h-100">
         {/* Chats Sidebar */}
-        <Col xs={12} md={4} lg={3} className="bg-light p-3 shadow-sm h-100 d-flex flex-column">
+        <Col
+          xs={12}
+          md={4}
+          lg={3}
+          className="p-3 shadow-sm h-100 d-flex flex-column"
+          style={{
+            backgroundColor: config.theme === "Oscuro" ? "#444" : "#f8f9fa", // Fondo lateral según el tema
+          }}
+        >
           {/* Barra de búsqueda */}
           <Form className="mb-3">
             <Form.Control type="text" placeholder="Buscar..." />
@@ -44,44 +67,35 @@ function HeaderChatUI() {
 
           {/* Íconos de acciones */}
           <div className="d-flex justify-content-between mb-3">
-            <i className="bi bi-chat-left-text fs-2 me-3 d-flex justify-content-center align-items-center" style={{ flex: '1 1 30%' }}></i>
-            <i className="bi bi-telephone fs-2 me-3 d-flex justify-content-center align-items-center" style={{ flex: '1 1 30%' }}></i>
-            <i className="bi bi-people fs-2 d-flex justify-content-center align-items-center" style={{ flex: '1 1 30%' }}></i>
+            <i
+              className="bi bi-chat-left-text fs-2 me-3 d-flex justify-content-center align-items-center"
+              style={{ flex: "1 1 30%" }}
+            ></i>
+            <i
+              className="bi bi-people fs-2 d-flex justify-content-center align-items-center"
+              style={{ flex: "1 1 30%" }}
+            ></i>
           </div>
 
           {/* Lista de Chats */}
           <div className="mb-3">
             <h5 className="fw-bold fs-4">Chats</h5>
           </div>
-          {Array.from({ length: 5 }, (_, i) => (
-            <div className="chat-box mb-2 p-2 border rounded d-flex align-items-center" key={i}>
-              <div
-                className="me-3"
-                style={{
-                  width: "40px",
-                  height: "40px",
-                  borderRadius: "50%",
-                  backgroundColor: "#007bff",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  color: "white",
-                  fontWeight: "bold",
-                }}
-              >
-                {`C${i + 1}`}
-              </div>
-              <div>
-                <strong>Contacto {i + 1}</strong>
-                <div className="text-muted">Último mensaje del contacto</div>
-              </div>
-            </div>
-          ))}
 
           {/* Configuración */}
           <div className="mt-auto">
             <hr />
-            <Link to="/configuracion" className="d-flex align-items-center text-decoration-none text-dark">
+            <Link
+              to="/configuracion"
+              className="d-flex align-items-center text-decoration-none"
+              style={{
+                backgroundColor: config.theme === "Oscuro" ? "#444" : "white", // Fondo ajustado según el tema
+                color: config.theme === "Oscuro" ? "#fff" : "#000", // Color del texto según el tema
+                padding: "10px 15px", // Espaciado alrededor del texto
+                borderRadius: "5px", // Bordes redondeados
+                transition: "background-color 0.3s", // Transición suave al cambiar de tema
+              }}
+            >
               <i className="bi bi-gear-fill fs-4 me-3"></i>
               <span className="fw-semibold fs-5">Configuración</span>
             </Link>
@@ -93,11 +107,17 @@ function HeaderChatUI() {
           xs={12}
           md={8}
           lg={9}
-          className="bg-white pr-3 pl-3 shadow-sm d-flex flex-column h-100"
-          style={{ paddingBottom: "20px" }}
+          className="shadow-sm d-flex flex-column h-100"
+          style={{
+            backgroundColor: config.theme === "Oscuro" ? "#333" : "#fff", // Fondo principal según el tema
+            color: config.theme === "Oscuro" ? "#fff" : "#000", // Color de texto principal
+          }}
         >
           {/* Header de conversación */}
-          <Row className="align-items-center p-3 mb-3" style={{ boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)" }}>
+          <Row
+            className="align-items-center p-3 mb-3"
+            style={{ boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)" }}
+          >
             <Col xs="auto">
               <div
                 style={{
@@ -117,27 +137,55 @@ function HeaderChatUI() {
             </Col>
             <Col>
               <div>
-                <strong>Nombre del Contacto</strong>
-                <div className="text-muted">Última vez activo: hace 10 minutos</div>
+                <strong></strong>
               </div>
             </Col>
           </Row>
 
           {/* Área de mensajes */}
-          <div className="message-area mb-3 flex-grow-1" style={{ maxHeight: "100%", overflowY: "auto", border: "1px solid #ccc", borderRadius: "5px", padding: "10px" }}>
-            <p><strong>Contacto 1:</strong> Hola, ¿cómo estás?</p>
-            <p><strong>Tú:</strong> ¡Hola! Estoy bien, gracias.</p>
-            <p><strong>Contacto 1:</strong> ¿Qué has estado haciendo?</p>
+          <div
+            className="message-area mb-3 flex-grow-1"
+            style={{
+              maxHeight: "100%",
+              overflowY: "auto",
+              border: "1px solid #ccc",
+              borderRadius: "5px",
+              padding: "10px",
+              backgroundColor: config.theme === "Oscuro" ? "#444" : "#f8f9fa", // Fondo de mensajes según el tema
+            }}
+          >
           </div>
 
           {/* Campo de entrada */}
-          <Row>
-            <Col xs={10}>
-              <Form.Control type="text" placeholder="Escribe un mensaje..." />
+          <Row className="pt-2 pb-3">
+            <Col xs={10} className="d-flex">
+              <Form.Control
+                type="text"
+                placeholder="Escribe un mensaje..."
+                style={{
+                  backgroundColor: config.theme === "Oscuro" ? "#555" : "#fff", // Fondo de la caja de texto
+                  color: config.theme === "Oscuro" ? "#fff" : "#000", // Color del texto
+                  border: "1px solid #ccc", // Borde sutil
+                  borderRadius: "5px", // Bordes redondeados
+                }}
+              />
             </Col>
-            <Col xs={2}>
-              <Button variant="primary" className="w-100">
-                <i className="bi bi-paperclip"></i> Adjuntar
+            <Col xs={2} className="d-flex align-items-center">
+              <Button
+                variant="primary"
+                className="w-100 d-flex justify-content-center align-items-center"
+                style={{
+                  color: "#fff",
+                  fontSize: "16px",
+                  backgroundColor:
+                    config.theme === "Oscuro" ? "#007bff" : "#007bff", // Mismo color en ambos modos
+                  border: "none", // Elimina el borde
+                  borderRadius: "5px", // Bordes redondeados
+                  padding: "8px 10px", // Ajuste de padding
+                }}
+              >
+                <i className="bi bi-paperclip"></i> {/* Ícono de adjuntar */}
+                Adjuntar
               </Button>
             </Col>
           </Row>

@@ -13,27 +13,39 @@ const ResetPassword = () => {
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
 
-  const handleReset = async () => {
-    if (data.password !== data.confirmPassword) {
-      setMessage('Las contraseñas no coinciden.');
-      console.log('1' + data.password + '2' + data.confirmPassword)
-      return;
-    }
-
-    try {
-      await axios.put('http://localhost:3000/api/login/',data);
-      setMessage('Tu contraseña ha sido restablecida exitosamente.');
-      
-      setTimeout(() => {
-        navigate('/login');  // Redirige al usuario a la pantalla de inicio de sesión
-      }, 3000);  // Espera 3 segundos antes de redirigir
-
-    } catch (error) {
-      setMessage('Hubo un error al restablecer la contraseña. Por favor intenta nuevamente.');
-      alert(data.email)
-      console.log(error);
-    }
-  };
+    const handleReset = async () => {
+      // Validamos que las contraseñas coincidan
+      if (data.password !== data.confirmPassword) {
+        setMessage('Las contraseñas no coinciden.');
+        return;
+      }
+  
+      // Validamos que la nueva contraseña no esté vacía
+      if (!data.password) {
+        setMessage('La contraseña no puede estar vacía.');
+        return;
+      }
+  
+      try {
+        // Realizamos la solicitud PUT al backend, pasando el token y la nueva contraseña
+        const response = await axios.put(`http://localhost:3000/api/reset/${token}`, {
+          password: data.password
+        });
+  
+        // Mensaje de éxito si la contraseña se restablece correctamente
+        setMessage('Tu contraseña ha sido restablecida exitosamente.');
+  
+        // Redirigimos al usuario a la página de login después de 3 segundos
+        setTimeout(() => {
+          navigate('/login');
+        }, 3000);
+  
+      } catch (error) {
+        // En caso de error, mostramos el mensaje correspondiente
+        setMessage('Hubo un error al restablecer la contraseña. Por favor intenta nuevamente.');
+        console.log(error);
+      }
+    };
 
   const handleChange = (e) => { //Con este metodo se guardan los datos del formulario, no se como funciona me lo encontre por ahi
     const { name, value } = e.target;
