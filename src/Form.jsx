@@ -43,6 +43,7 @@ const LoginForm = () => {
         alert('Iniciando Sesión');
         localStorage.setItem('isLoggedIn', 'true'); // Guarda el estado de sesión
         localStorage.setItem("ucorreo", login.correo); // Guarda correo para uso global
+        localStorage.setItem("id_user",userData.id); //Guarda globalmente el id
         navigate('/chatui'); // Redirige al chat
       } else {
         alert('Contraseña incorrecta');

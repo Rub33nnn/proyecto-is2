@@ -3,12 +3,19 @@ import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import { Link } from "react-router-dom"; // Importamos Link para la navegación
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { useConfiguracion } from "./AppContext"; // Importamos el contexto para el tema y tamaño de fuente
+import axios from 'axios'
 
 function HeaderChatUI() {
   const { config } = useConfiguracion(); // Accedemos al contexto para obtener el tema y tamaño de fuente
-  const recuperar_chats = () =>{
-    
+  const recuperar_chats = async () =>{
+    const id = localStorage.getItem("id_user");
+    const response = await axios.get(`http://localhost:3000/api/login/obtenerconversacion/${id}`);
+    console.log(response.data);
   };
+
+  useEffect(() => {
+    recuperar_chats();
+  }, []);
 
   return (
     <Container

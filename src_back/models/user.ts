@@ -14,12 +14,6 @@ const User = db.define('user', { //Lo que esta en comillas es el nombre de la ta
     },
     imguser:{
         type: DataTypes.STRING
-    },
-    recoverytoken:{
-        type: DataTypes.STRING
-    },
-    recoverytokenexpiration:{
-        type: DataTypes.DATE
     }
 },{
     createdAt: false,

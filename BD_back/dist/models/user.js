@@ -21,6 +21,12 @@ const User = connectiondb_1.default.define('user', {
     },
     imguser: {
         type: sequelize_1.DataTypes.STRING
+    },
+    recoverytoken:{
+        type: sequelize_1.DataTypes.STRING
+    },
+    recoverytokenexpiration:{
+        type: sequelize_1.DataTypes.DATE
     }
 }, {
     createdAt: false,
