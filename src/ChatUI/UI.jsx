@@ -7,15 +7,49 @@ import axios from 'axios'
 
 function HeaderChatUI() {
   const { config } = useConfiguracion(); // Accedemos al contexto para obtener el tema y tamaño de fuente
+  const [chats, setChats] = useState([]); // Estado para almacenar los chats
+  const [mensajes, setMensajes] = useState([]);
+  const [participantes, setParticipantes] = useState({ participante1: "", participante2: "" });
+
   const recuperar_chats = async () =>{
     const id = localStorage.getItem("id_user");
+    try{
     const response = await axios.get(`http://localhost:3000/api/login/obtenerconversacion/${id}`);
     console.log(response.data);
+    setChats(response.data); // Guardamos los chats en el estado
+    }catch(error){
+      console.error("ERROR AL RECUPERAR LOS CHATS",error);
+    };
   };
 
   useEffect(() => {
     recuperar_chats();
   }, []);
+
+  const recuperar_mensajes = async (id_chat) =>{
+    const chatEncontrado = chats.find((chat) => chat.id === id_chat);
+    const id_user = localStorage.getItem("id_user");
+    try{
+      const response = await axios.get(`http://localhost:3000/api/login/obtenermensajes/${id_chat}`);
+      console.log(response.data);
+      setMensajes(response.data);
+      
+
+      if(chatEncontrado.idusuarioparticipante1 === id_user){
+        setParticipantes({
+          participante1: "Tu",
+          participante2:chatEncontrado.participante2.nombre
+        });
+      }else{
+        setParticipantes({
+          participante2: "Tu",
+          participante1:chatEncontrado.participante2.nombre
+        });
+      };
+    }catch(error){
+      console.error("ERROR AL RECUPERAR LOS MENSAJES",error);
+    }
+  };
 
   return (
     <Container
@@ -85,8 +119,33 @@ function HeaderChatUI() {
           </div>
 
           {/* Lista de Chats */}
-          <div className="mb-3">
-            <h5 className="fw-bold fs-4">Chats</h5>
+          <div className="flex-grow-1 overflow-auto">
+            {chats.length > 0 ? (
+              chats.map((chat) => (
+                <div
+                  key={chat.id}
+                  className="chat-item mb-2 p-3 d-flex align-items-center justify-content-between"
+                  style={{
+                    backgroundColor: config.theme === "Oscuro" ? "#555" : "#fff",
+                    color: config.theme === "Oscuro" ? "#fff" : "#000",
+                    borderRadius: "5px",
+                    cursor: "pointer",
+                    boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+                    transition: "background-color 0.3s",
+                  }}
+                  onClick={() => recuperar_mensajes(chat.id)}
+                >
+                  <div>
+                    <h6 className="mb-1 fw-bold">{chat.titulo}</h6>
+                    <small>
+                      {chat.participante2}
+                    </small>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p>No hay chats disponibles</p>
+            )}
           </div>
 
           {/* Configuración */}
@@ -125,7 +184,7 @@ function HeaderChatUI() {
             className="align-items-center p-3 mb-3"
             style={{ boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)" }}
           >
-            <Col xs="auto">
+            <Col xs="auto" className="d-flex align-items-center">
               <div
                 style={{
                   width: "40px",
@@ -137,9 +196,21 @@ function HeaderChatUI() {
                   justifyContent: "center",
                   color: "white",
                   fontWeight: "bold",
+                  marginRight: "10px",
                 }}
               >
                 P
+              </div>
+              <div
+                style={{
+                border: "1px solid #ccc",
+                borderRadius: "5px",
+                padding: "10px",
+                backgroundColor: config.theme === "Oscuro" ? "#444" : "#f8f9fa",
+                maxWidth: "70%", // Ajusta el ancho del cuadro si es necesario
+                }}
+              >
+              {participantes.participante2}
               </div>
             </Col>
             <Col>
@@ -161,6 +232,43 @@ function HeaderChatUI() {
               backgroundColor: config.theme === "Oscuro" ? "#444" : "#f8f9fa", // Fondo de mensajes según el tema
             }}
           >
+            {mensajes.length > 0 ? (
+              mensajes.map((mensaje) => (
+                <div
+                  key={mensaje.id}
+                  className="mb-2 p-2"
+                  style={{
+                    borderRadius: "5px",
+                    backgroundColor:
+                      mensaje.userid === localStorage.getItem("id_user")
+                        ? "#007bff"
+                        : "#e9ecef",
+                    color:
+                      mensaje.userid === localStorage.getItem("id_user")
+                        ? "#fff"
+                        : "#000",
+                    alignSelf:
+                      mensaje.userid === localStorage.getItem("id_user")
+                        ? "flex-end"
+                        : "flex-start",
+                    maxWidth: "70%",
+                  }}
+                >
+                  {/* Nombre del remitente */}
+                    <small className="fw-bold d-block">
+                      {mensaje.userid === localStorage.getItem("id_user")
+                        ? "Tú"
+                        : participantes.participante2}
+                    </small>
+                  <p className="mb-0">{mensaje.txt_message}</p>
+                  <small className="text-muted">
+                    {new Date(mensaje.fechadeenvio).toLocaleTimeString()}
+                  </small>
+                </div>
+              ))
+            ) : (
+              <p>No hay mensajes disponibles</p>
+            )}
           </div>
 
           {/* Campo de entrada */}
@@ -191,8 +299,7 @@ function HeaderChatUI() {
                   padding: "8px 10px", // Ajuste de padding
                 }}
               >
-                <i className="bi bi-paperclip"></i> {/* Ícono de adjuntar */}
-                Adjuntar
+                <i className="bi bi-send"></i> {/* Ícono de enviar */}
               </Button>
             </Col>
           </Row>

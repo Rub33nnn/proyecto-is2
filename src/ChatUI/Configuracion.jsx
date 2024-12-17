@@ -92,7 +92,7 @@ const resetForm = () => {
 };
 
   return (
-    <Container fluid className="p-4" style={{ backgroundColor: config.theme === "Oscuro" ? "#343a40" : "#f8f9fa" }}>
+    <Container fluid className="m-0" style={{ backgroundColor: config.theme === "Oscuro" ? "#343a40" : "#f8f9fa" }}>
       {/* Botón de regresar */}
       <Button
         variant="primary"

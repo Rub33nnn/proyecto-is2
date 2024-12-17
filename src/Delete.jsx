@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const DeleteAccount = () => {
     const [email, setEmail] = useState('');  // Estado para almacenar el correo
@@ -63,6 +63,7 @@ const DeleteAccount = () => {
                                 </Button>
                             </Form.Group>
                         </Form>
+                        <Link to="/login">Volver al inicio de sesión</Link>
                     </div>
                 </Col>
             </Row>

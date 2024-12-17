@@ -11,23 +11,23 @@ const RecoverPass = () => {
   const handleRecover = async () => {
     try {
       // Aquí envías el correo al backend para la recuperación de contraseña
-      const response = await axios.post(`http://localhost:3000/api/login/recover/${email}`); //edite esta parte porque como el metodo no hace nada da un error, ahora solo imprime en la consola del back
+      const response = await axios.post(`http://localhost:3000/api/login/recover/${email}`);
       setMessage(response.data.message);
 
       sessionStorage.setItem('email',email)
-      // Si la solicitud es exitosa, muestra un mensaje y redirige a la pantalla de "Reset"
-      setMessage('Se ha enviado un enlace de recuperación a tu correo electrónico.');
-      
       // Redirigir a la página de "Reset"
-      setTimeout(() => {
-        navigate('/Reset');  // Aquí colocas la ruta de la pantalla de restablecimiento
-      }, 2000);  // Espera de 2 segundos antes de redirigir
+      if (response.data.message) {
+        setTimeout(() => {
+          navigate('/Reset');  // Aquí colocas la ruta de la pantalla de restablecimiento
+        }, 2000);  // Espera de 2 segundos antes de redirigir
+      }
+
     } catch (error) {
       setMessage('Error al enviar el enlace de recuperación. Por favor, intenta nuevamente.');
       console.log(error);
     }
   };
-
+  
   return (
     <Container className="d-flex align-items-center justify-content-center vh-100 p-0" fluid>
       <Row className="justify-content-center w-100">
