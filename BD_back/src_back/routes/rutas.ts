@@ -3,7 +3,7 @@ import { Router } from "express";
 import User from "../models/user";
 import { where} from "sequelize";
 import sequilize from "../DB/connectiondb";
-import { addUSer, deleteuser, getUSer, getUSerbypk, getUsers, updateuser, obtenerconversacion, obtenermensajes, crearconversacion, enviarmensaje} from "../controllers/Controladores";
+import { addUSer, deleteuser, getUSer, getUSerbypk, getUsers, updateuser, obtenerconversacion, obtenermensajes, crearconversacion, enviarmensaje, getUSerbyName} from "../controllers/Controladores";
 const router = Router()
 
 router.get('/', getUsers) //Los metodos get son los SELECT de sql, aqui declaro varios metodos que realizaran distintos tipos de consulta, este seria un select *
@@ -16,6 +16,7 @@ router.get('/obtenermensajes/:idconversacion', obtenermensajes)
 router.post('/crearconversacion', crearconversacion)
 router.post('/enviarmensaje', enviarmensaje)
 router.delete('/:email', deleteuser)
+router.get('/getUSerbyName', getUSerbyName)
 
 /*
 router.post('/api/login/recover/:email', async (req, res) => {
