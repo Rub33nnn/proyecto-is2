@@ -18,9 +18,9 @@ class Server{
     }
 
     listen(){
-        this.app.listen(this.port, () => {
-            console.log("Aplicacion corriendo en el puerto", this.port)
-        })
+        this.app.listen(parseInt(this.port), '0.0.0.0', () => {
+            console.log("Aplicacion corriendo en el puerto", this.port);
+          });
     }
 
     routes(){

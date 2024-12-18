@@ -16,16 +16,13 @@ const User = connectiondb_1.default.define('user', {
     password: {
         type: sequelize_1.DataTypes.STRING
     },
-    telefono: {
-        type: sequelize_1.DataTypes.STRING
-    },
     imguser: {
         type: sequelize_1.DataTypes.STRING
     },
-    recoverytoken:{
+    recoverytoken: {
         type: sequelize_1.DataTypes.STRING
     },
-    recoverytokenexpiration:{
+    recoverytokenexpiration: {
         type: sequelize_1.DataTypes.DATE
     }
 }, {

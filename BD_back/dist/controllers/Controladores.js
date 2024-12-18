@@ -12,15 +12,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.resetPassword = exports.recoverPassword = exports.sendemail = exports.enviarmensaje = exports.crearconversacion = exports.obtenermensajes = exports.obtenerconversacion = exports.deleteuser = exports.updateuser = exports.addUSer = exports.getUSerbypk = exports.getUSer = exports.getUsers = void 0;
+exports.sendemail = exports.enviarmensaje = exports.crearconversacion = exports.obtenermensajes = exports.obtenerconversacion = exports.deleteuser = exports.updateuser = exports.addUSer = exports.getUSerbypk = exports.getUSer = exports.getUsers = void 0;
 const user_1 = __importDefault(require("../models/user"));
 const userinfo_1 = __importDefault(require("../models/userinfo"));
 const connectiondb_1 = __importDefault(require("../DB/connectiondb"));
-const sequelize_1 = require("sequelize");
 const mensaje_1 = __importDefault(require("../models/mensaje"));
 const createconversation_1 = __importDefault(require("../models/createconversation"));
-const nodemailer_1 = __importDefault(require("nodemailer")); // Para enviar correos electronicos
-const crypto_1 = __importDefault(require("crypto"));
 const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const listuse = yield user_1.default.findAll();
     res.json(listuse);
@@ -182,4 +179,3 @@ const sendemail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log("Manda email");
 });
 exports.sendemail = sendemail;
-

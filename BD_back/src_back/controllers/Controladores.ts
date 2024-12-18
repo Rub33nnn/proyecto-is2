@@ -6,8 +6,6 @@ import sequilize from "../DB/connectiondb"
 import { Sequelize, QueryTypes } from "sequelize"
 import Mensaje from "../models/mensaje"
 import CreateConversation from "../models/createconversation"
-import nodemailer from "nodemailer";  // Para enviar correos electronicos
-import crypto  from 'crypto';
 interface User {
     email: string;
   }

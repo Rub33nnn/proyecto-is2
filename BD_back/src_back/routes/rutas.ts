@@ -3,7 +3,6 @@ import { Router } from "express";
 import User from "../models/user";
 import { where} from "sequelize";
 import sequilize from "../DB/connectiondb";
-import crypto  from 'crypto';
 import { addUSer, deleteuser, getUSer, getUSerbypk, getUsers, updateuser, obtenerconversacion, obtenermensajes, crearconversacion, enviarmensaje} from "../controllers/Controladores";
 const router = Router()
 
