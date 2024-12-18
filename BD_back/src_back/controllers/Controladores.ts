@@ -47,6 +47,24 @@ export const getUSerbypk = async (req: Request, res:Response) =>{ //Esta es para
         })
     }
 }
+
+export const getUSerbyName = async (req: Request, res:Response) =>{ //Esta se usa para hacer la consulta y buscar al usuario con el que se va a loguear
+    const {username} = req.params  //Se usa el email para el login
+    const user = await User.findAll({ //Hacemos la consulta y obtenemos el usuario regustrado con ese email
+        where:{
+            username: username
+        }
+    })
+  
+    if(user){
+        res.json(user) //Si hay un resultado se guardan los datos que encotramos en la estructura User (la que esta definida en models/user) y se maneja como un json
+        console.log(user)
+    }else{
+        res.status(404).json({
+            msg:'No existe este usuario'
+        })
+    }
+  }
      
 
 export const addUSer = async (req: Request, res:Response) =>{ //Esta es para añadir usuarios, lo que hace es que recibe un json con los datos del usuario que se va a añadir y los inserta en la bd
