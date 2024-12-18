@@ -5,6 +5,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import { useConfiguracion } from "./AppContext"; // Importamos el contexto para el tema y tamaño de fuente
 import axios from 'axios'
 
+const apiUrl = import.meta.env.VITE_API_URL;
 function HeaderChatUI() {
   const { config } = useConfiguracion(); // Accedemos al contexto para obtener el tema y tamaño de fuente
   const [chats, setChats] = useState([]); // Estado para almacenar los chats
@@ -14,7 +15,7 @@ function HeaderChatUI() {
   const recuperar_chats = async () =>{
     const id = localStorage.getItem("id_user");
     try{
-    const response = await axios.get(`http://localhost:3000/api/login/obtenerconversacion/${id}`);
+    const response = await axios.get(`${apiUrl}/api/login/obtenerconversacion/${id}`);
     console.log(response.data);
     setChats(response.data); // Guardamos los chats en el estado
     }catch(error){
@@ -30,7 +31,7 @@ function HeaderChatUI() {
     const chatEncontrado = chats.find((chat) => chat.id === id_chat);
     const id_user = localStorage.getItem("id_user");
     try{
-      const response = await axios.get(`http://localhost:3000/api/login/obtenermensajes/${id_chat}`);
+      const response = await axios.get(`${apiUrl}/api/login/obtenermensajes/${id_chat}`);
       console.log(response.data);
       setMensajes(response.data);
       

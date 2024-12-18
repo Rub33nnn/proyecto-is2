@@ -3,6 +3,7 @@ import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom'; // Importa useNavigate
 import axios from 'axios';  
 
+const apiUrl = import.meta.env.VITE_API_URL;
 const RecoverPass = () => {
   const [email, setEmail] = useState('');  // Estado para almacenar el correo
   const [message, setMessage] = useState('');  // Estado para almacenar mensajes de éxito/error
@@ -11,7 +12,7 @@ const RecoverPass = () => {
   const handleRecover = async () => {
     try {
       // Aquí envías el correo al backend para la recuperación de contraseña
-      const response = await axios.post(`http://localhost:3000/api/login/recover/${email}`);
+      const response = await axios.post(`${apiUrl}/api/login/recover/${email}`);
       setMessage(response.data.message);
 
       sessionStorage.setItem('email',email)

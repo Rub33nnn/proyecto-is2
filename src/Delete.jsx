@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
-
+const apiUrl = import.meta.env.VITE_API_URL;
 const DeleteAccount = () => {
     const [email, setEmail] = useState('');  // Estado para almacenar el correo
     const [password, setPassword] = useState('');  // Estado para almacenar la contraseña
@@ -15,7 +15,7 @@ const DeleteAccount = () => {
         if (confirmDelete) {
             alert (email)
             try {
-                const response = await axios.delete('http://localhost:3000/api/login/' + email, {
+                const response = await axios.delete( apiUrl + '/api/login/' + email, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('token')}`
                     },

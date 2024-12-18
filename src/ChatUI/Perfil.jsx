@@ -5,6 +5,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useConfiguracion } from "./AppContext";
 
+const apiUrl = import.meta.env.VITE_API_URL;
 function Perfil() {
 
   const { config } = useConfiguracion();
@@ -21,7 +22,7 @@ function Perfil() {
     const obtenerdatos = async () => {
       const correo = localStorage.getItem("ucorreo"); // Trae el correo que se usó para iniciar sesión
       try {
-        const response = await axios.get(`http://localhost:3000/api/login/${correo}`); // Solicita información mediante el correo
+        const response = await axios.get(`${apiUrl}/api/login/${correo}`); // Solicita información mediante el correo
         console.log(response.data); //Lo que se recibe de la api
         
         const { username, email, telefono } = response.data[0];
@@ -46,7 +47,7 @@ function Perfil() {
 
   const actualizardatos = () =>{
     const correo = localStorage.getItem("ucorreo");
-    const response = axios.put(`http://localhost:3000/api/login/`,userData).then(()=>{
+    const response = axios.put(`${apiUrl}/api/login/`,userData).then(()=>{
       alert("Datos actualizados");
     });
   };

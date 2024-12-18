@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
-
+const apiUrl = import.meta.env.VITE_API_URL;
 const RegisterForm = () => {
 
   const [Register, setRegister] = useState({
@@ -17,7 +17,7 @@ const RegisterForm = () => {
     if(Register.password.length >= 8){
       if(Register.password == Register.confpassword){
         alert("Usuario " + Register.username + " Registrado")
-        axios.post('http://localhost:3000/api/login/', Register).then(() =>{
+        axios.post(apiUrl + '/api/login/', Register).then(() =>{
         alert("Usuario añadido, por favor inice sesion con su usuario")
         navigate("/login")
       })

@@ -3,6 +3,7 @@ import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+const apiUrl = import.meta.env.VITE_API_URL;
 const LoginForm = () => {
   const [login, setLogin] = useState({
     correo: '',
@@ -23,7 +24,7 @@ const LoginForm = () => {
 
   const mandarDatos = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/api/login/${login.correo}`);
+      const response = await axios.get(`${apiUrl}/api/login/${login.correo}`);
       console.log('Respuesta de la BD', response.data);
 
       if (response.data.length > 0) {
@@ -49,7 +50,7 @@ const LoginForm = () => {
         alert('Contraseña incorrecta');
       }
     } else {
-      alert('Correo incorrecto');
+      alert('Correo incorrecto ' + apiUrl);
     }
   };
 

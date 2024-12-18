@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useConfiguracion } from "./AppContext";
 import axios from "axios";
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 function Configuracion() {
   const [datos, setDatos] = useState({
     contra_actual: "",
@@ -12,6 +14,7 @@ function Configuracion() {
   });
 
   const navigate = useNavigate();
+ 
 
   const { config, updateConfig } = useConfiguracion();
 
@@ -42,7 +45,7 @@ function Configuracion() {
 const recepcion = async () => {
 	const email = localStorage.getItem("ucorreo"); //Solicita el correo del almacenamiento local
 	try {
-		const response = await axios.get(`http://localhost:3000/api/login/${email}`); //Solicta la informacion de usando el correo
+		const response = await axios.get(`${apiUrl}/api/login/${email}`); //Solicta la informacion de usando el correo
 		console.log("Respuesta BD:",response.data); //Muestra en consola, la respuesta de la BD
 
     //Verfica que si haya datos recibidos de la BD
@@ -65,7 +68,7 @@ const cambiar_contraseña = async (BD_Data) => {
 	  if(BD_Data.password === datos.contra_actual) { //Verifica que la contraseña actual supuesta coincida con la contraseña actual
 		  if(datos.new_contra === datos.c_new_contra) { //Verifica que la contraseña nueva y su confirmacion sean correctas
 			  const envio = { email, password: datos.new_contra }; //asigna en un envio, el email del usuario y las contraseña nueva
-          await axios.put(`http://localhost:3000/api/login/`, envio).then(() => { //Hace el put en la api para que se actualize la contraseña
+          await axios.put(`${apiUrl}/api/login/`, envio).then(() => { //Hace el put en la api para que se actualize la contraseña
           alert("Contraseña actualizada");
           resetForm();
         });

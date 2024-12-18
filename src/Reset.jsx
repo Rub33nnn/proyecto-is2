@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
+const apiUrl = import.meta.env.VITE_API_URL;
 const ResetPassword = () => {
   const [data, setData] = useState({ //Aqui se guarda lo que hayas puesto en el formulario
     email: sessionStorage.getItem('email'),
@@ -28,7 +28,7 @@ const ResetPassword = () => {
   
       try {
         // Realizamos la solicitud PUT al backend, pasando el token y la nueva contraseña
-        const response = await axios.put(`http://localhost:3000/api/reset/${token}`, {
+        const response = await axios.put(`${apiUrl}/api/reset/${token}`, {
           password: data.password
         });
   
