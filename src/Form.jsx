@@ -45,6 +45,7 @@ const LoginForm = () => {
         localStorage.setItem('isLoggedIn', 'true'); // Guarda el estado de sesión
         localStorage.setItem("ucorreo", login.correo); // Guarda correo para uso global
         localStorage.setItem("id_user",userData.id); //Guarda globalmente el id
+        localStorage.setItem("fotoperfil",userData.imguser);
         navigate('/chatui'); // Redirige al chat
       } else {
         alert('Contraseña incorrecta');
@@ -91,9 +92,6 @@ const LoginForm = () => {
                 />
               </Form.Group>
 
-              <Form.Group className="mb-3" controlId="formCheckbox">
-                <Form.Check type="checkbox" label="Recuérdame" />
-              </Form.Group>
               <span>
                 ¿Haz olvidado tu contraseña? <Link to="/recover">Click aquí</Link>
               </span>
@@ -102,11 +100,15 @@ const LoginForm = () => {
               </Button>
             </Form>
             <span>
+              <center>
               ¿No tienes una cuenta? <Link to="/register">Regístrate</Link>
+              </center>
             </span>
             <span>
+              <br /><center>
               {' '}
               <Link to="/delete">¿Eliminar cuenta?</Link>
+              </center>
             </span>
           </div>
         </Col>

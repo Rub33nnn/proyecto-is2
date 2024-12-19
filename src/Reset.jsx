@@ -28,7 +28,7 @@ const ResetPassword = () => {
   
       try {
         // Realizamos la solicitud PUT al backend, pasando el token y la nueva contraseña
-        const response = await axios.put(`${apiUrl}/api/reset/${token}`, {
+        const response = await axios.put(`${apiUrl}/api/reset/}`, {
           password: data.password
         });
   

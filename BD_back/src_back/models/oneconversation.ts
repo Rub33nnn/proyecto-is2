@@ -1,0 +1,25 @@
+import db from '../DB/connectiondb'
+import { DataTypes } from 'sequelize'
+
+//---Este modelo de conversasion se usa solo para obtenerlas, debido a que esta se usa para guardar la informacion de un stored procedure de la BD
+
+//Aqui definimos un modelo donde vamos a guarda la informacion para la base de datos, este puede ser usado tanto para hacer consultas como para insertar en la BD
+const OneConversation = db.define('conversation', { //Lo que esta en comillas es el nombre de la tabla en donde vas a insertar o consultar los datos
+    titulo:{ //Los campos deben tener exactamente los mismos nombres que tienen en la BD
+        type: DataTypes.STRING
+    },
+    idusuarioparticipante1:{
+        type: DataTypes.STRING
+    },
+    idusuarioparticipante2:{
+        type:DataTypes.STRING
+    },
+    fecha_creacion:{
+        type:DataTypes.STRING
+    }
+},{
+    createdAt: false,
+    updatedAt: false
+})
+
+export default OneConversation

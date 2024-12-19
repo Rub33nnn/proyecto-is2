@@ -15,7 +15,8 @@ function Perfil() {
     email: "",
     telefono: "",
   });
-  const [fotoperfil, setfotoperfil] = useState("");
+  const fotoPerfil = localStorage.getItem("fotoperfil");
+  
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -24,14 +25,12 @@ function Perfil() {
       try {
         const response = await axios.get(`${apiUrl}/api/login/${correo}`); // Solicita información mediante el correo
         console.log(response.data); //Lo que se recibe de la api
-        
+
         const { username, email, telefono } = response.data[0];
 
         setuserData({ username, email, telefono: telefono || "" }); // Guarda en userData
         console.log(userData); //Lo que se tiene guardado en userData
 
-        const p_letra = username.charAt(0).toUpperCase();
-        setfotoperfil(p_letra);
       } catch (error) {
         console.error("No se pudo obtener datos", error);
       }
@@ -39,26 +38,25 @@ function Perfil() {
     obtenerdatos();
   }, []);
 
-  useEffect(() => {
-    if (fotoperfil) {
-      localStorage.setItem("fotoperfil", fotoperfil);
-    }
-  }, [fotoperfil]);
 
-  const actualizardatos = () =>{
-    const correo = localStorage.getItem("ucorreo");
-    const response = axios.put(`${apiUrl}/api/login/`,userData).then(()=>{
+  const actualizardatos = () => { //La funcion de actualizar datos
+    const correo = localStorage.getItem("ucorreo"); //manda traer el correo
+    const response = axios.put(`${apiUrl}/api/login/`, userData).then(() => { //Con la api simplemente lo ingresa la userData en el actualizar datos
       alert("Datos actualizados");
     });
   };
 
   const handleRedirect = () => {
     navigate("/chatui"); // Redirige a la página principal
+    localStorage.removeItem("idchat"); //Limpia el idchat almacen
   };
 
   const handleLogout = () => {
     localStorage.removeItem('isLoggedIn'); // Elimina el estado de sesión
     localStorage.removeItem('ucorreo'); // Limpia el correo almacenado
+    localStorage.removeItem("idchat"); //limpia el chat almacenado
+    localStorage.removeItem("id_user"); //Limpia el usuario almacenado
+    localStorage.removeItem("fotoperfil"); //Limpia la fotoperfil
     navigate('/'); // Redirige a la pantalla de inicio de sesión
   };
 
@@ -77,7 +75,6 @@ function Perfil() {
       style={{
         backgroundColor: config.theme === "Oscuro" ? "#333" : "#fff", // Cambia el fondo según el tema
         color: config.theme === "Oscuro" ? "#fff" : "#000", // Cambia el color del texto según el tema
-        fontSize: `${config.fontSize}px`, // Aplica el tamaño de fuente
       }}
     >
       <div
@@ -115,7 +112,7 @@ function Perfil() {
                 fontWeight: "bold",
               }}
             >
-              {fotoperfil} {/* Inicial del usuario */}
+              {fotoPerfil} {/* Inicial del usuario */}
             </div>
             <Button variant="link" className="mt-2 text-decoration-none text-primary fw-bold">
               Cambiar Foto
@@ -125,12 +122,12 @@ function Perfil() {
 
         {/* Formulario */}
         <Form>
-        <Form.Group className="mb-3" controlId="nombre">
+          <Form.Group className="mb-3" controlId="nombre">
             <Form.Label className="fw-semibold">Nombre</Form.Label>
             <Form.Control
               type="text"
               placeholder="Nombre completo"
-              value={userData.username}
+              value={userData.username} //Le asigna el valor de userData para username
               onChange={handleChange}
               name="username"
             />
@@ -140,7 +137,7 @@ function Perfil() {
             <Form.Control
               type="email"
               placeholder="Correo electrónico"
-              value={userData.email}
+              value={userData.email} //Le asigna el valor de userData para email
               disabled
               name="email"
             />
@@ -150,7 +147,7 @@ function Perfil() {
             <Form.Control
               type="text"
               placeholder="Número de teléfono"
-              value={userData.telefono}
+              value={userData.telefono} //Le asigna el valor de userData para telefono
               onChange={handleChange}
               name="telefono"
             />
@@ -159,8 +156,8 @@ function Perfil() {
             variant="primary"
             type="button"
             className="w-100 rounded-pill fw-semibold"
-            style={{ padding: "10px 0" }}
-            onClick={actualizardatos}
+            style={{ padding: "10px 0" }} 
+            onClick={actualizardatos} //Manda llamar el actualizar datos
           >
             Guardar Cambios
           </Button>

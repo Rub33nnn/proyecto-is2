@@ -1,11 +1,11 @@
 import { Request,Response } from "express"
 import User from "../models/user"
-import Conversation from "../models/conversations"
 import Userinfo from "../models/userinfo"
 import sequilize from "../DB/connectiondb"
-import { Sequelize, QueryTypes } from "sequelize"
 import Mensaje from "../models/mensaje"
 import CreateConversation from "../models/createconversation"
+import OneConversation from "../models/oneconversation"
+
 interface User {
     email: string;
   }
@@ -139,19 +139,18 @@ export const obtenerconversacion = async(req:Request, res:Response) =>{ //Se obt
 }
 
 export const obtenermensajes = async(req:Request, res:Response) =>{ //Se obtienen los mensajes de un usuario
-    const {idconversacion} = req.params  
-    const mensaje = await Mensaje.findAll({ 
-        where:{
-            conversation_id: idconversacion
-        }
-    })
+    const {idconversacion} = req.params 
 
-    if(mensaje){
-        res.json(mensaje)
-        console.log(mensaje)
-    }else{
-        res.status(404).json({
-            msg:'No existe la conversacion'
+    console.log(idconversacion)
+    try{
+        const results = await sequilize.query('CALL obtenermensajes(:idconversacion)', {
+            replacements:{idconversacion},
+        })
+        res.status(200).json(results)
+    }catch(err){
+        console.error("Error al ejecutar el procedimiento: ", err)
+        res.status(500).json({
+            error: "Error al obtener los mensajes. "
         })
     }
 }
@@ -177,7 +176,7 @@ export const enviarmensaje = async (req:Request, res:Response) =>{ //Envia un me
     const {body} = req
     try {
         await Mensaje.create(body)
-        console.log(body)
+        console.log(body);
         res.json({
             msg:"Mensaje sendeado"
         })
@@ -186,8 +185,29 @@ export const enviarmensaje = async (req:Request, res:Response) =>{ //Envia un me
         res.json({
             msg:"No se pudo mandar el mensaje"
         })
+        console.log(error);
     }
 }
+
+export const obtenerultimaconversacion = async(req:Request, res:Response) =>{
+    const {iduser} = req.params  //Se usa el email para el login
+    const user = await OneConversation.findOne({ //Hacemos la consulta y obtenemos el usuario regustrado con ese email
+        where:{
+            idusuarioparticipante1: iduser
+        },
+        order: [['id', 'DESC']],
+    })
+  
+    if(user){
+        res.json(user) //Si hay un resultado se guardan los datos que encotramos en la estructura User (la que esta definida en models/user) y se maneja como un json
+        console.log(user)
+    }else{
+        res.status(404).json({
+            msg:'No existe este usuario'
+        })
+    }
+}
+
 
 export const sendemail = async(req:Request, res:Response) =>{
     console.log("Manda email")

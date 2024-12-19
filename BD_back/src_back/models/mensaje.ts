@@ -14,6 +14,9 @@ const Mensaje = db.define('message', { //Lo que esta en comillas es el nombre de
     },
     fechadeenvio:{
         type:DataTypes.STRING
+    },
+    username:{
+        type:DataTypes.STRING
     }
 },{
     createdAt: false,

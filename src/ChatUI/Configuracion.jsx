@@ -26,12 +26,9 @@ function Configuracion() {
     updateConfig({ [setting]: event.target.value });
   };
 
-  const handleRangeChange = (event, setting) => {
-    updateConfig({ [setting]: event.target.value });
-  };
-
   const handleRedirect = () => {
     navigate("/chatui"); // Redirige a la página principal
+    localStorage.removeItem("idchat");
   };
 
   const handleChange = (e) => {
@@ -95,7 +92,7 @@ const resetForm = () => {
 };
 
   return (
-    <Container fluid className="m-0" style={{ backgroundColor: config.theme === "Oscuro" ? "#343a40" : "#f8f9fa" }}>
+    <Container fluid className="m-0" style={{ minHeight: "100vh", backgroundColor: config.theme === "Oscuro" ? "#333" : "#fff" }}>
       {/* Botón de regresar */}
       <Button
         variant="primary"
@@ -119,7 +116,7 @@ const resetForm = () => {
         {/* Columna amplia para configuración */}
         <Col xs={12} md={10} lg={8}>
           {/* Sección: Cambiar contraseña */}
-          <div className="mb-5 p-4 border rounded shadow-sm" style={{ backgroundColor: config.theme === "Oscuro" ? "#495057" : "#fff" }}>
+          <div className="mb-5 p-4 border rounded shadow-sm" style={{ backgroundColor: config.theme === "Oscuro" ? "#444" : "#f8f9fa" }}>
             <h5 className="fw-semibold mb-3" style={{ color: config.theme === "Oscuro" ? "#fff" : "#000" }}>Cambiar contraseña</h5>
             <Form>
               <Form.Group controlId="formCurrentPassword" className="mb-3">
@@ -186,24 +183,8 @@ const resetForm = () => {
             </Form>
           </div>
 
-          {/* Sección: Configuraciones generales */}
-          <div className="mb-5 p-4 border rounded shadow-sm" style={{ backgroundColor: config.theme === "Oscuro" ? "#495057" : "#fff" }}>
-            <h5 className="fw-semibold mb-3" style={{ color: config.theme === "Oscuro" ? "#fff" : "#000" }}>Configuraciones generales</h5>
-            <Form>
-              <Form.Group controlId="formNotifications" className="mb-3">
-                <Form.Check
-                  type="switch"
-                  label="Notificaciones activadas"
-                  checked={config.notifications}
-                  onChange={(e) => handleSwitchChange(e, 'notifications')}
-                  style={{ color: config.theme === "Oscuro" ? "#fff" : "#000" }}
-                />
-              </Form.Group>
-            </Form>
-          </div>
-
           {/* Sección: Personalización de interfaz */}
-          <div className="p-4 border rounded shadow-sm" style={{ backgroundColor: config.theme === "Oscuro" ? "#495057" : "#fff" }}>
+          <div className="p-4 border rounded shadow-sm" style={{ backgroundColor: config.theme === "Oscuro" ? "#444" : "#f8f9fa" }}>
             <h5 className="fw-semibold mb-3" style={{ color: config.theme === "Oscuro" ? "#fff" : "#000" }}>Personalización</h5>
             <Form>
               <Form.Group controlId="formTheme" className="mb-3">
@@ -221,17 +202,6 @@ const resetForm = () => {
                   <option>Claro</option>
                   <option>Oscuro</option>
                 </Form.Select>
-              </Form.Group>
-              <Form.Group controlId="formChatFontSize" className="mb-3">
-                <Form.Label style={{ color: config.theme === "Oscuro" ? "#fff" : "#000" }}>Tamaño de fuente en los chats</Form.Label>
-                <Form.Range
-                  value={config.chatFontSize}
-                  onChange={(e) => handleRangeChange(e, 'chatFontSize')}
-                  style={{
-                    backgroundColor: config.theme === "Oscuro" ? "#555" : "#fff",
-                    color: config.theme === "Oscuro" ? "#fff" : "#000",
-                  }}
-                />
               </Form.Group>
             </Form>
           </div>

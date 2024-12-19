@@ -18,6 +18,9 @@ const Mensaje = connectiondb_1.default.define('message', {
     },
     fechadeenvio: {
         type: sequelize_1.DataTypes.STRING
+    },
+    username: {
+        type: sequelize_1.DataTypes.STRING
     }
 }, {
     createdAt: false,
